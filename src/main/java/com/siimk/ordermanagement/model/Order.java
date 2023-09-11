@@ -10,13 +10,16 @@ import java.util.List;
 public class Order {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "customer_order_id")
     private Long id;
-    @Temporal(TemporalType.TIMESTAMP)
+    @Temporal(TemporalType.DATE)
+    @Column(name = "submission_date")
     private Date submissionDate;
     @ManyToOne
     @JoinColumn(name = "customer_id")
     private Customer customer;
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
+    @Column(name = "order_lines")
     private List<OrderLine> orderLines;
 
     public Order() {
@@ -59,4 +62,5 @@ public class Order {
     public void setOrderLines(List<OrderLine> orderLines) {
         this.orderLines = orderLines;
     }
+
 }

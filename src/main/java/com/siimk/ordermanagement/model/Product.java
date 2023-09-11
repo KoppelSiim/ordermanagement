@@ -17,9 +17,10 @@ public class Product {
     private String name;
 
     @NotBlank
-    @Column(unique = true)
+    @Column(name = "sku_code", unique = true)
     private String skuCode;
     @NotNull
+    @Column(name = "unit_price")
     private BigDecimal unitPrice;
 
     public Product() {
@@ -62,4 +63,5 @@ public class Product {
     public void setUnitPrice(BigDecimal unitPrice) {
         this.unitPrice = unitPrice;
     }
+
 }

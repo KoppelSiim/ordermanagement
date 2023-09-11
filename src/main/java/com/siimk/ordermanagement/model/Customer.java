@@ -10,9 +10,10 @@ public class Customer {
     @Column(name = "customer_id")
     private Long id;
     @NotBlank
-    @Column(unique = true)
+    @Column(name = "registration_code", unique = true)
     private String registrationCode;
     @NotBlank
+    @Column(name = "full_name")
     private String fullName;
     @NotBlank
     @Column(unique = true)
@@ -69,4 +70,5 @@ public class Customer {
     public void setTelephone(String telephone) {
         this.telephone = telephone;
     }
+
 }
