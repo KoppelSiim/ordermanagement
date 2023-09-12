@@ -1,7 +1,9 @@
 package com.siimk.ordermanagement.model;
 
 import jakarta.persistence.*;
+import org.hibernate.annotations.CreationTimestamp;
 
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 
@@ -12,9 +14,9 @@ public class Order {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "customer_order_id")
     private Long id;
-    @Temporal(TemporalType.DATE)
+    @CreationTimestamp
     @Column(name = "submission_date")
-    private Date submissionDate;
+    private LocalDate submissionDate;
     @ManyToOne
     @JoinColumn(name = "customer_id")
     private Customer customer;
@@ -25,7 +27,7 @@ public class Order {
     public Order() {
     }
 
-    public Order(Date submissionDate, Customer customer, List<OrderLine> orderLines) {
+    public Order(LocalDate submissionDate, Customer customer, List<OrderLine> orderLines) {
         this.submissionDate = submissionDate;
         this.customer = customer;
         this.orderLines = orderLines;
@@ -39,11 +41,11 @@ public class Order {
         this.id = id;
     }
 
-    public Date getSubmissionDate() {
+    public LocalDate getSubmissionDate() {
         return submissionDate;
     }
 
-    public void setSubmissionDate(Date submissionDate) {
+    public void setSubmissionDate(LocalDate submissionDate) {
         this.submissionDate = submissionDate;
     }
 
