@@ -1,7 +1,9 @@
 package com.siimk.ordermanagement.service;
 
+import com.siimk.ordermanagement.model.Customer;
 import com.siimk.ordermanagement.model.Product;
 import com.siimk.ordermanagement.repository.ProductRepository;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -20,5 +22,9 @@ public class ProductService {
         newProduct.setUnitPrice(product.getUnitPrice());
         productRepository.save(newProduct);
         return "Product created successfully";
+    }
+    public Product getProductById(Long productId) {
+        return productRepository.findById(productId)
+                .orElseThrow(() -> new EntityNotFoundException("Product not found with ID: " + productId));
     }
 }

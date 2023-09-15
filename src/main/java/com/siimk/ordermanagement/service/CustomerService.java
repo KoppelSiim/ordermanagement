@@ -2,6 +2,7 @@ package com.siimk.ordermanagement.service;
 
 import com.siimk.ordermanagement.model.Customer;
 import com.siimk.ordermanagement.repository.CustomerRepository;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -22,5 +23,10 @@ public class CustomerService {
         customerRepository.save(newCustomer);
 
         return "Customer created successfully";
+    }
+
+    public Customer getCustomerById(Long customerId) {
+        return customerRepository.findById(customerId)
+                .orElseThrow(() -> new EntityNotFoundException("Customer not found with ID: " + customerId));
     }
 }
