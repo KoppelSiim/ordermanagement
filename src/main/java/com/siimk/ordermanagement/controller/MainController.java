@@ -89,4 +89,13 @@ public class MainController {
         }
         return ResponseEntity.ok(orders);
     }
+    @GetMapping("/ordersByCustomer")
+    public ResponseEntity<List<Order>> searchOrdersByCustomer(@RequestParam("id") Long id) {
+        List<Order> orders = orderService.searchOrdersByCustomer(id);
+        if (orders.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(orders);
+    }
+
 }
