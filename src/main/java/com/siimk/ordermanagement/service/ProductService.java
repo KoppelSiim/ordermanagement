@@ -1,6 +1,5 @@
 package com.siimk.ordermanagement.service;
 
-import com.siimk.ordermanagement.model.Customer;
 import com.siimk.ordermanagement.model.Product;
 import com.siimk.ordermanagement.repository.ProductRepository;
 import jakarta.persistence.EntityNotFoundException;

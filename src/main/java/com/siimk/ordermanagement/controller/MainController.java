@@ -8,12 +8,15 @@ import com.siimk.ordermanagement.service.CustomerService;
 import com.siimk.ordermanagement.service.OrderService;
 import com.siimk.ordermanagement.service.ProductService;
 import jakarta.persistence.EntityNotFoundException;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.time.LocalDate;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api")
@@ -50,6 +53,26 @@ public class MainController {
         } catch (Exception e) {
             // Handle other exceptions, such as database errors
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error creating order");
+        }
+    }
+    @GetMapping("/customers")
+    public List<Customer> getAllCustomers() {
+        return customerService.getAllCustomers();
+    }
+
+    @GetMapping("/searchorder")
+    public ResponseEntity<?> searchOrdersByDate
+            (@RequestParam("date") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date) {
+
+        List<Order> orders = orderService.getOrdersByDate(date);
+        if (orders.isEmpty()) {
+            String message = "No orders on " + date.toString();
+            Map<String, String> response = new HashMap<>();
+            response.put("message", message);
+            return ResponseEntity.ok(response);
+        }
+        else{
+        return ResponseEntity.ok(orders);
         }
     }
 }

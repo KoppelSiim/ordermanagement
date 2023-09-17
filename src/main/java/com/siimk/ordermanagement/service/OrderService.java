@@ -30,30 +30,24 @@ public class OrderService {
 
         Order newOrder = new Order();
         newOrder.setSubmissionDate(LocalDate.now());
-        // Get customer
         Customer customer = customerService.getCustomerById(orderRequest.getCustomerId());
-        // Set the customer for the new order
         newOrder.setCustomer(customer);
 
-        // Process order lines
         List<OrderLine> orderLines = new ArrayList<>();
         for (OrderLineRequest lineRequest : orderRequest.getOrderLines()) {
             Long productId = lineRequest.getProductId();
-
-            // Retrieve the product by productId
             Product product = productService.getProductById(productId);
 
             if (product == null) {
-                // Handle the case where the product doesn't exist
-                // You can throw an exception, return an error message, or handle it as needed.
+                // todo Handle the case where the product doesn't exist
+                // todo exception, return an error message
             } else {
                 OrderLine orderLine = new OrderLine(lineRequest.getQuantity(), product);
                 orderLines.add(orderLine);
             }
         }
-        // Set the order lines for the new order
-        newOrder.setOrderLines(orderLines);
 
+        newOrder.setOrderLines(orderLines);
         orderRepository.save(newOrder);
 
         return "Order created successfully";

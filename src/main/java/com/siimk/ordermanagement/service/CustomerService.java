@@ -31,6 +31,9 @@ public class CustomerService {
         return customerRepository.findById(customerId)
                 .orElseThrow(() -> new EntityNotFoundException("Customer not found with ID: " + customerId));
     }
+    public List<Customer> getAllCustomers() {
+        return customerRepository.findAll();
+    }
 
 
 }

@@ -19,4 +19,4 @@ spring:
 logging:
   level:
     org.hibernate.SQL: DEBUG
-    liquibase: INFO
+    liquibase: DEBUG
