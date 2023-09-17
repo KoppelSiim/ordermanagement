@@ -53,6 +53,21 @@ public class MainController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error creating order");
         }
     }
+    @PutMapping("/orders/{orderId}/orderlines/{orderLineId}/changeQuantity")
+    public ResponseEntity<String> changeOrderLineQuantity(
+            @PathVariable Long orderId,
+            @PathVariable Long orderLineId,
+            @RequestParam int newQuantity) {
+        try {
+            orderService.updateOrderLineQuantity(orderId, orderLineId, newQuantity);
+            return ResponseEntity.ok("Order line quantity updated successfully");
+        } catch (EntityNotFoundException e) {
+            return ResponseEntity.notFound().build();
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error updating order line quantity");
+        }
+    }
+
     @GetMapping("/customers")
     public ResponseEntity<List<Customer>> getAllCustomers() {
         try {

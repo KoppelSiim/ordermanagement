@@ -8,11 +8,13 @@ import com.siimk.ordermanagement.model.Order;
 import com.siimk.ordermanagement.model.OrderLine;
 import com.siimk.ordermanagement.model.Product;
 import com.siimk.ordermanagement.repository.OrderRepository;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class OrderService {
@@ -52,6 +54,28 @@ public class OrderService {
 
         return "Order created successfully";
     }
+
+    public void updateOrderLineQuantity(Long orderId, Long orderLineId, int newQuantity) {
+
+        Optional<Order> orderToUpdate = orderRepository.findById(orderId);
+        if (orderToUpdate.isPresent()) {
+            Order order = orderToUpdate.get();
+
+            for (OrderLine orderLine : order.getOrderLines()) {
+                if (orderLine.getId().equals(orderLineId)) {
+                    orderLine.setQuantity(newQuantity);
+                    break;
+                }
+            }
+
+            orderRepository.save(order);
+        } else {
+            throw new EntityNotFoundException("Order not found with ID: " + orderId);
+        }
+    }
+
+
+
     public List<Order> getOrdersByDate(LocalDate submissionDate) {
         return orderRepository.findBySubmissionDate(submissionDate);
     }
