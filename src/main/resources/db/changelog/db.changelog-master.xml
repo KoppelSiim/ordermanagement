@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd
+        http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+
+    <!-- ChangeSet for Customer Table Creation -->
+    <changeSet id="create customer table" author="admin">
+        <createTable tableName="customer">
+            <column name="customer_id" type="bigint" autoIncrement="true">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="email" type="varchar(255)">
+                <constraints unique="true"/>
+            </column>
+            <column name="full_name" type="varchar(255)"/>
+            <column name="registration_code" type="varchar(255)">
+                <constraints unique="true"/>
+            </column>
+            <column name="telephone" type="varchar(255)"/>
+        </createTable>
+    </changeSet>
+
+    <!-- ChangeSet for Product Table Creation -->
+    <changeSet id="create product table" author="admin">
+        <createTable tableName="product">
+            <column name="product_id" type="bigint" autoIncrement="true">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="name" type="varchar(255)"/>
+            <column name="sku_code" type="varchar(255)">
+                <constraints unique="true"/>
+            </column>
+            <column name="unit_price" type="numeric(38,2)" defaultValue="0.0">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <!-- ChangeSet for OrderLine Table Creation -->
+    <changeSet id="create order_line table" author="admin">
+        <createTable tableName="order_line">
+            <column name="order_line_id" type="bigint" autoIncrement="true">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="quantity" type="integer" defaultValue="0">
+                <constraints nullable="false"/>
+            </column>
+            <column name="customer_order_id" type="bigint"/>
+            <column name="product_id" type="bigint"/>
+        </createTable>
+    </changeSet>
+
+    <!-- ChangeSet Order Table Creation -->
+    <changeSet id="create customer_order table" author="admin">
+        <createTable tableName="customer_order">
+            <column name="customer_order_id" type="bigint" autoIncrement="true">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="submission_date" type="date"/>
+            <column name="customer_id" type="bigint"/>
+        </createTable>
+    </changeSet>
+
+    <!-- ChangeSet for adding foreign key to Order table -->
+    <changeSet id="add foreign key to customer_order table" author="admin">
+        <addForeignKeyConstraint  baseColumnNames="customer_id"
+                                  baseTableName="customer_order"
+                                  constraintName="fk_customer_order_customer"
+                                  onDelete="CASCADE"
+                                  onUpdate="CASCADE"
+                                  referencedColumnNames="customer_id"
+                                  referencedTableName="customer"
+                                  validate="true"/>
+    </changeSet>
+
+    <!-- ChangeSet for adding foreign key to OrderLine table (to CustomerOrder) -->
+    <changeSet id="add foreign key to order_line table ref customer_order)" author="admin">
+        <addForeignKeyConstraint  baseColumnNames="customer_order_id"
+                                  baseTableName="order_line"
+                                  constraintName="fk_order_line_customer_order"
+                                  onDelete="CASCADE"
+                                  onUpdate="CASCADE"
+                                  referencedColumnNames="customer_order_id"
+                                  referencedTableName="customer_order"
+                                  validate="true"/>
+    </changeSet>
+
+    <!-- ChangeSet for adding foreign key to OrderLine table (to Product) -->
+    <changeSet id="add foreign key to order_line table ref product" author="admin">
+        <addForeignKeyConstraint  baseColumnNames="product_id"
+                                  baseTableName="order_line"
+                                  constraintName="fk_order_line_product"
+                                  onDelete="CASCADE"
+                                  onUpdate="CASCADE"
+                                  referencedColumnNames="product_id"
+                                  referencedTableName="product"
+                                  validate="true"/>
+    </changeSet>
+
+
+    <changeSet id="insert test customer" author="admin">
+        <sql>
+            <![CDATA[
+            INSERT INTO customer (
+            customer_id,
+            registration_code,
+            full_name,
+            email,
+            telephone
+            )
+            values(
+            1,
+            'AAA-BBB-000',
+            'Siim Tamm',
+            'siim@mail.com',
+            '555-666-777-888'
+            );
+            ]]>
+        </sql>
+    </changeSet>
+</databaseChangeLog>

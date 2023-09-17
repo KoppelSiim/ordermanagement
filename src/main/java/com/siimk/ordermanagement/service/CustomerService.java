@@ -5,6 +5,8 @@ import com.siimk.ordermanagement.repository.CustomerRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class CustomerService {
 
@@ -29,4 +31,6 @@ public class CustomerService {
         return customerRepository.findById(customerId)
                 .orElseThrow(() -> new EntityNotFoundException("Customer not found with ID: " + customerId));
     }
+
+
 }
