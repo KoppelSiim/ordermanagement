@@ -31,36 +31,42 @@ public class MainController {
         this.orderService = orderService;
     }
 
-    @PostMapping("/createcustomer")
+    @PostMapping("/createCustomer")
     public ResponseEntity<String> createCustomer(@RequestBody Customer customer) {
         String message = customerService.createCustomer(customer);
         return ResponseEntity.status(HttpStatus.CREATED).body(message);
     }
 
-    @PostMapping("/createproduct")
+    @PostMapping("/createProduct")
     public ResponseEntity<String> createCustomer(@RequestBody Product product){
         String message = productService.createProduct(product);
         return ResponseEntity.status(HttpStatus.CREATED).body(message);
     }
-    @PostMapping("/createorder")
+    @PostMapping("/createOrder")
     public ResponseEntity<String> createOrder(@RequestBody OrderRequest orderRequest) {
         try {
             String response = orderService.createOrder(orderRequest);
             return ResponseEntity.ok(response);
         } catch (EntityNotFoundException e) {
-            // Handle the case where the customer or product is not found
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         } catch (Exception e) {
-            // Handle other exceptions, such as database errors
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error creating order");
         }
     }
     @GetMapping("/customers")
-    public List<Customer> getAllCustomers() {
-        return customerService.getAllCustomers();
+    public ResponseEntity<List<Customer>> getAllCustomers() {
+        try {
+            List<Customer> customers = customerService.getAllCustomers();
+            if (customers.isEmpty()) {
+                return ResponseEntity.notFound().build();
+            }
+            return ResponseEntity.ok(customers);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
     }
 
-    @GetMapping("/searchorder")
+    @GetMapping("/searchOrder")
     public ResponseEntity<?> searchOrdersByDate
             (@RequestParam("date") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date) {
 
@@ -74,5 +80,13 @@ public class MainController {
         else{
         return ResponseEntity.ok(orders);
         }
+    }
+    @GetMapping("/ordersByProduct")
+    public ResponseEntity<List<Order>> searchOrdersByProduct(@RequestParam("id") Long id) {
+        List<Order> orders = orderService.searchOrdersByProduct(id);
+        if (orders.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(orders);
     }
 }

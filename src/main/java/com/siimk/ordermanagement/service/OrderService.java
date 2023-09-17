@@ -55,4 +55,8 @@ public class OrderService {
     public List<Order> getOrdersByDate(LocalDate submissionDate) {
         return orderRepository.findBySubmissionDate(submissionDate);
     }
+    public List<Order> searchOrdersByProduct(Long id){
+        return orderRepository.findOrdersByProductId(id);
+    }
+
 }
