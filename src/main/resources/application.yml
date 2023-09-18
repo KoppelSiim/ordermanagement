@@ -18,5 +18,5 @@ spring:
       enabled: true
 logging:
   level:
-    org.hibernate.SQL: DEBUG
-    liquibase: DEBUG
+    org.hibernate.SQL: INFO
+    liquibase: INFO

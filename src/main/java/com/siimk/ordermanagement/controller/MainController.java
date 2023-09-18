@@ -25,7 +25,8 @@ public class MainController {
     private final CustomerService customerService;
     private final ProductService productService;
     private final OrderService orderService;
-    public MainController(CustomerService customerService, ProductService productService, OrderService orderService){
+
+    public MainController(CustomerService customerService, ProductService productService, OrderService orderService) {
         this.customerService = customerService;
         this.productService = productService;
         this.orderService = orderService;
@@ -38,10 +39,11 @@ public class MainController {
     }
 
     @PostMapping("/createProduct")
-    public ResponseEntity<String> createCustomer(@RequestBody Product product){
+    public ResponseEntity<String> createCustomer(@RequestBody Product product) {
         String message = productService.createProduct(product);
         return ResponseEntity.status(HttpStatus.CREATED).body(message);
     }
+
     @PostMapping("/createOrder")
     public ResponseEntity<String> createOrder(@RequestBody OrderRequest orderRequest) {
         try {
@@ -53,6 +55,7 @@ public class MainController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error creating order");
         }
     }
+
     @PutMapping("/orders/{orderId}/orderlines/{orderLineId}/changeQuantity")
     public ResponseEntity<String> changeOrderLineQuantity(
             @PathVariable Long orderId,
@@ -62,9 +65,9 @@ public class MainController {
             orderService.updateOrderLineQuantity(orderId, orderLineId, newQuantity);
             return ResponseEntity.ok("Order line quantity updated successfully");
         } catch (EntityNotFoundException e) {
-            return ResponseEntity.notFound().build();
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error updating order line quantity");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }
     }
 
@@ -91,11 +94,11 @@ public class MainController {
             Map<String, String> response = new HashMap<>();
             response.put("message", message);
             return ResponseEntity.ok(response);
-        }
-        else{
-        return ResponseEntity.ok(orders);
+        } else {
+            return ResponseEntity.ok(orders);
         }
     }
+
     @GetMapping("/ordersByProduct")
     public ResponseEntity<List<Order>> searchOrdersByProduct(@RequestParam("id") Long id) {
         List<Order> orders = orderService.searchOrdersByProduct(id);
@@ -104,6 +107,7 @@ public class MainController {
         }
         return ResponseEntity.ok(orders);
     }
+
     @GetMapping("/ordersByCustomer")
     public ResponseEntity<List<Order>> searchOrdersByCustomer(@RequestParam("id") Long id) {
         List<Order> orders = orderService.searchOrdersByCustomer(id);

@@ -22,13 +22,14 @@ public class OrderService {
     private final OrderRepository orderRepository;
     private final CustomerService customerService;
     private final ProductService productService;
-    public OrderService(OrderRepository orderRepository, CustomerService customerService, ProductService productService){
+
+    public OrderService(OrderRepository orderRepository, CustomerService customerService, ProductService productService) {
         this.orderRepository = orderRepository;
         this.customerService = customerService;
         this.productService = productService;
     }
 
-    public String createOrder(OrderRequest orderRequest){
+    public String createOrder(OrderRequest orderRequest) {
 
         Order newOrder = new Order();
         newOrder.setSubmissionDate(LocalDate.now());
@@ -39,14 +40,8 @@ public class OrderService {
         for (OrderLineRequest lineRequest : orderRequest.getOrderLines()) {
             Long productId = lineRequest.getProductId();
             Product product = productService.getProductById(productId);
-
-            if (product == null) {
-                // todo Handle the case where the product doesn't exist
-                // todo exception, return an error message
-            } else {
-                OrderLine orderLine = new OrderLine(lineRequest.getQuantity(), product);
-                orderLines.add(orderLine);
-            }
+            OrderLine orderLine = new OrderLine(lineRequest.getQuantity(), product);
+            orderLines.add(orderLine);
         }
 
         newOrder.setOrderLines(orderLines);
@@ -75,15 +70,15 @@ public class OrderService {
     }
 
 
-
     public List<Order> getOrdersByDate(LocalDate submissionDate) {
         return orderRepository.findBySubmissionDate(submissionDate);
     }
-    public List<Order> searchOrdersByProduct(Long id){
+
+    public List<Order> searchOrdersByProduct(Long id) {
         return orderRepository.findOrdersByProductId(id);
     }
 
-    public List<Order> searchOrdersByCustomer(Long id){
+    public List<Order> searchOrdersByCustomer(Long id) {
         return orderRepository.findOrdersByCustomerId(id);
     }
 

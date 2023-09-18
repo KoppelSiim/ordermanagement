@@ -10,11 +10,11 @@ public class ProductService {
 
     private final ProductRepository productRepository;
 
-    public ProductService(ProductRepository productRepository){
+    public ProductService(ProductRepository productRepository) {
         this.productRepository = productRepository;
     }
 
-    public String createProduct(Product product){
+    public String createProduct(Product product) {
         Product newProduct = new Product();
         newProduct.setName(product.getName());
         newProduct.setSkuCode(product.getSkuCode());
@@ -22,8 +22,8 @@ public class ProductService {
         productRepository.save(newProduct);
         return "Product created successfully";
     }
+
     public Product getProductById(Long productId) {
-        return productRepository.findById(productId)
-                .orElseThrow(() -> new EntityNotFoundException("Product not found with ID: " + productId));
+        return productRepository.findById(productId).orElseThrow(() -> new EntityNotFoundException("Product not found with ID: " + productId));
     }
 }

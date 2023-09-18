@@ -101,7 +101,6 @@
                                   validate="true"/>
     </changeSet>
 
-
     <changeSet id="insert customers" author="admin">
         <sql>
             <![CDATA[

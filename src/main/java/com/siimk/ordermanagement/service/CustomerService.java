@@ -16,7 +16,7 @@ public class CustomerService {
         this.customerRepository = customerRepository;
     }
 
-    public String createCustomer(Customer customer){
+    public String createCustomer(Customer customer) {
         Customer newCustomer = new Customer();
         newCustomer.setRegistrationCode(customer.getRegistrationCode());
         newCustomer.setFullName(customer.getFullName());
@@ -28,12 +28,11 @@ public class CustomerService {
     }
 
     public Customer getCustomerById(Long customerId) {
-        return customerRepository.findById(customerId)
-                .orElseThrow(() -> new EntityNotFoundException("Customer not found with ID: " + customerId));
+        return customerRepository.findById(customerId).orElseThrow(() -> new EntityNotFoundException("Customer not found with ID: " + customerId));
     }
+
     public List<Customer> getAllCustomers() {
         return customerRepository.findAll();
     }
-
 
 }
