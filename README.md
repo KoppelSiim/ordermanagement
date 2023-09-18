@@ -23,6 +23,6 @@ Liquibase schema and data insertion is in available "src/main/resources/db/chang
 2. Create product
 3. Create order
 4. Search all orders by date
-5. Search Orders by product id
-6. Search Orders by customer id
+5. Search orders by product id
+6. Search orders by customer id
 7. Change quantity of products in an order line
